@@ -43,3 +43,11 @@ pip install cx_Oracle<7 --upgrade
 ```
 See details here https://cx-oracle.readthedocs.io/en/6.4.1/installation.html  
 
+
+### Package _pandas_utils_
+Modules to add functionality over `pandas` and `geopandas` 
+
+To install:
+```shell script
+pip install "git+https://github.com/ernestone/python_packages#egg=pandas_utils&subdirectory=pandas_utils_pckg"
+```
