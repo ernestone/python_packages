@@ -45,11 +45,10 @@ setup(
         'Operating System :: OS Independent'
     ],
     install_requires=[
-        'cx_oracle<7',
+        'cx_oracle <7',
         'lxml',
-        'extra_utils',
-        'osgeo_utils',
-        'spatial_utils'
+        format_requirement('osgeo_utils'),
+        format_requirement('spatial_utils')
     ],
     python_requires='>=3.7',
     package_data={
