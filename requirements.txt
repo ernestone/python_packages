@@ -1,2 +1,2 @@
-cx_Oracle <7 --install-option="--upgrade"
+ # Install all packages via requirements and not provoque PIP conflict between local packages
 --editable pandas_utils_pckg
