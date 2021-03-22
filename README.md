@@ -35,14 +35,18 @@ To install:
 pip install "git+https://github.com/ernestone/python_packages#egg=cx_oracle_spatial&subdirectory=cx_oracle_spatial_pckg"
 ```
 
-F.A.Q:
-If trying install _cx_oracle_spatial_ an error with `cx_oracle` occurred try pre-install it with this in your 
+Problems:
+If trying install _cx_oracle_spatial_ an error with `cx_oracle` occurred, try pre-install it with this command in your 
 requirements:
 ```shell
 pip install cx_Oracle<7 --upgrade
 ```
 See details here https://cx-oracle.readthedocs.io/en/6.4.1/installation.html  
 
+ or if you use conda with this:
+ ```shell
+ conda install cx_Oracle<7
+ ```
 
 ### Package _pandas_utils_
 Modules to add functionality over `pandas` and `geopandas` 
