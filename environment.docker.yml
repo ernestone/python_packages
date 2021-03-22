@@ -3,4 +3,5 @@ nodejs <13
 eumetsat::oracle-instantclient
 conda-forge::gdal >=3,<4
 conda-forge::geopandas >=0.8,<0.9
+cx_Oracle<7
 pip >=20

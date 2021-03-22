@@ -18,11 +18,10 @@ RUN apt-get install libaio1
 RUN conda install --file environment.docker.yml
 
 ENV PATH_DEVELOPER_MODE /project
-RUN pip3 install cx_Oracle<7 --upgrade
-RUN pip3 install --editable extra_utils_pckg
-RUN pip3 install --editable osgeo_utils_pckg
-RUN pip3 install --editable spatial_utils_pckg
-RUN pip3 install --editable cx_oracle_spatial_pckg
-RUN pip3 install --editable pandas_utils_pckg
+RUN pip install --editable extra_utils_pckg
+RUN pip install --editable osgeo_utils_pckg
+RUN pip install --editable spatial_utils_pckg
+RUN pip install --editable cx_oracle_spatial_pckg
+RUN pip install --editable pandas_utils_pckg
 
-RUN bash -c /project/config_env/unix/post_install_python.sh
+RUN /project/config/unix/post_install_python.sh
