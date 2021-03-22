@@ -23,7 +23,7 @@ Modules to add common functionality to `OSGEO GDAL`. Requires `GDAL` library C p
 
 To install:
 ```shell script
-pip install "git+https://github.com/ernestone/python_packages#egg=spatial_utils&subdirectory=spatial_utils_pckg"
+pip install "git+https://github.com/ernestone/python_packages#egg=osgeo_utils&subdirectory=osgeo_utils_pckg"
 ```
 ### Package _cx_oracle_spatial_
 Modules to connect to `Oracle` database and treat his objects in a `sqlalchemy` style but dealing with spatial data as 
@@ -43,11 +43,10 @@ pip install cx_Oracle<7 --upgrade
 ```
 See details here https://cx-oracle.readthedocs.io/en/6.4.1/installation.html  
 
- or if you use conda with this:
+if you use conda with this:
  ```shell
  conda install cx_Oracle<7
  ```
-
 ### Package _pandas_utils_
 Modules to add functionality over `pandas` and `geopandas` 
 
