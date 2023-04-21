@@ -39,7 +39,7 @@ setup(
         'Pillow',
         'jellyfish',
         'pyyaml',
-        'sqlparse==0.2.4',
+        'sqlparse==0.4.4',
         'openpyxl',
         'psycopg2-binary',
         'sqlalchemy'
