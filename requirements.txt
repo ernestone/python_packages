@@ -1,2 +1,5 @@
- # Install all packages via requirements and not provoque PIP conflict between local packages
---editable pandas_utils_pckg
+ipython
+cython
+setuptools>=70
+devpi-client>=7.1.0
+twine

@@ -1,0 +1,104 @@
+# Base image with GDAL and Oracle Instant Client installed
+ARG PYTHON_VERSION=3.12
+
+FROM python:${PYTHON_VERSION}-slim AS runtime
+
+LABEL maintainer="PlanolPort<planolport@portdebarcelona.cat>"
+
+ARG gdal_version=3.10.3
+ARG oracle_client_version=23
+ARG url_download_oracle_client=https://download.oracle.com/otn_software/linux/instantclient/2326000/oracle-instantclient-basic-23.26.0.0.0-1.el9.x86_64.rpm
+ARG path_oracle_client=./config/oracle/$oracle_client_version
+ARG CUSTOM_UID=65535
+ARG USER_NAME=appuser
+ARG base_path=/home/${USER_NAME}
+
+RUN getent passwd ${USER_NAME} || useradd --create-home -u ${CUSTOM_UID} ${USER_NAME}
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+#    && echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list \
+    && apt-get update && apt-get upgrade -yq \
+    && apt-get install -yq --no-install-recommends wget curl
+
+# Instant client Oracle
+RUN mkdir -p /tmp/oracle
+RUN echo "Downloading Oracle Instant Client from $url_download_oracle_client"
+RUN wget -O /tmp/oracle/oracle-instantclient-basic.rpm $url_download_oracle_client
+ENV ORACLE_CLIENT_PATH=/usr/lib/oracle/${oracle_client_version}/client64
+# Set env var for package python apb_cx_oracle_spatial
+ENV PATH_INSTANT_CLIENT_ORACLE=$ORACLE_CLIENT_PATH
+RUN echo "PATH_INSTANT_CLIENT_ORACLE=$PATH_INSTANT_CLIENT_ORACLE"
+ENV LD_LIBRARY_PATH=$ORACLE_CLIENT_PATH/lib
+ENV TNS_ADMIN=/usr/lib/oracle/${oracle_client_version}/client64/tns
+ENV TZ=Europe/Madrid
+
+RUN mkdir --parents $ORACLE_CLIENT_PATH && \
+    chmod -R o=rx ${ORACLE_CLIENT_PATH} && \
+    mkdir ${TNS_ADMIN}
+
+RUN apt-get install -yq --no-install-recommends alien libaio1t64 \
+    locales locales-all tzdata nodejs npm libpq-dev libssl-dev build-essential \
+    gdal-bin=${gdal_version}+dfsg-1 libgdal-dev=${gdal_version}+dfsg-1 \
+    && cd /tmp/oracle \
+    && for rpm in ./*.rpm; do alien -i --scripts $rpm; done \
+    && ln -s ${ORACLE_CLIENT_PATH} ${ORACLE_CLIENT_PATH}/include \
+    # Set timezone \
+    && ln -fs /usr/share/zoneinfo/$TZ /etc/localtime \
+    && dpkg-reconfigure --frontend noninteractive tzdata \
+    && echo $TZ > /etc/timezone
+
+# Crear alias para libreria de oracle libaio.so.1t64 como libaio.so.1
+RUN ln -sf /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1
+
+ARG ARG_LANG=es_ES.UTF-8
+ENV LANG=$ARG_LANG
+ENV LANGUAGE=$ARG_LANG
+ENV LC_ALL=$ARG_LANG
+ENV PYTHONUNBUFFERED 1
+
+ENV USER_NAME=${USER_NAME}
+USER $USER_NAME
+
+#ADD --chown=$USER_NAME:root https://astral.sh/uv/install.sh /tmp/uv_install.sh
+
+#RUN chmod +x /tmp/uv_install.sh && \
+#    /tmp/uv_install.sh && \
+#    rm -rf /tmp/uv_install.sh
+
+# Set up the UV environment path correctly
+#ENV PATH="/home/$USER_NAME/.local/bin:${PATH}"
+
+WORKDIR /home/$USER_NAME
+
+COPY --chown=$USER_NAME:root ./requirements.txt ./requirements.txt
+
+# RUN uv venv && uv pip install --upgrade pip -r requirements.txt --no-cache-dir
+RUN python -m venv --system-site-packages /home/$USER_NAME/venv \
+    && . /home/$USER_NAME/venv/bin/activate
+
+# Add local bin for $USER_NAME to PATH (for future pip installed scripts)
+ENV PATH=/home/$USER_NAME/venv/bin:$PATH
+
+# Add GDAL env vars
+ENV GDAL_DATA=/usr/share/gdal
+ENV PROJ_LIB=/usr/share/proj
+ENV GDAL_CONFIG=/usr/bin/gdal-config
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
+ENV C_INCLUDE_PATH=/usr/include/gdal
+RUN pip install --no-cache-dir gdal[numpy]==$(gdal-config --version)
+
+RUN pip install --upgrade pip -r requirements.txt --no-cache-dir
+
+# Después de instalar los paquetes Python con pip:
+USER root
+RUN apt-get -yq remove --auto-remove --purge alien build-essential \
+    && rm -rf /tmp/oracle \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean \
+USER $USER_NAME
+
+COPY --chown=$USER_NAME:root ./docs/ ./docs/
+RUN chmod -R u=rwx,g=rwx,o=rx ./docs
+
+CMD ["python"]
+

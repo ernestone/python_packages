@@ -1,56 +1,38 @@
-## Python library for GIS and spatial stuff, plus miscellaneous functionality 
-Python packages developed by the years as requirements for my different projects as GIS developer with `QGIS`, `ESRI`, 
-`Oracle`, `Postgis`, and other technologies used in this kind of projects with spatial data.
-### Package _extra_utils_
-Packages and modules used on different commonly problems founded in typical projects dealing with strings, mails, 
-logging, sql, xml and others.
+## Python library for GIS, Oracle spatial and other miscellaneous utilities 
+Python packages developed for GIS projects related with `QGIS`, `ESRI`, 
+`Oracle`, `Postgis`, and other technologies used with spatial data.
 
-To install:
-```shell script
-pip install "git+https://github.com/ernestone/python_packages#egg=extra_utils&subdirectory=extra_utils_pckg"
-```
-### Package _spatial_utils_
-Modules to deal with spatial data using common used spatial libraries as `Shapely`, 
-`Topojsons` (requires `Nodejs` installed), ...
+> **⚠️ GDAL 3.10 Migration:** This project has been updated to support GDAL 3.10. 
+> See [MIGRATION_QUICKSTART.md](gdal_310_migration/MIGRATION_QUICKSTART.md) for upgrade instructions and 
+> [GDAL_3.10_MIGRATION_NOTES.md](gdal_310_migration/GDAL_3.10_MIGRATION_NOTES.md) for detailed changes.
 
-To install:
-```shell script
-pip install "git+https://github.com/ernestone/python_packages#egg=spatial_utils&subdirectory=spatial_utils_pckg"
-```
-### Package _osgeo_utils_
-Modules to add common functionality to `OSGEO GDAL`. Requires `GDAL` library C previously installed 
-(see how here https://gdal.org/download.html#binaries).
+### Configuration:
+You must configure this environment variables to be able to run this project
 
-To install:
-```shell script
-pip install "git+https://github.com/ernestone/python_packages#egg=osgeo_utils&subdirectory=osgeo_utils_pckg"
-```
-### Package _cx_oracle_spatial_
-Modules to connect to `Oracle` database and treat his objects in a `sqlalchemy` style but dealing with spatial data as 
-one more type. Added the functionality of common used libraries in this kind of projects from the `osgeo_utils` and 
-`spatial_utils` packages to convert the `Oracle` data on different open source spatial data types.
+- PATH_DEVELOPER_MODE_APB
+- PATH_BASE_PACKAGES
+- PATH_GISWEB_DADES
+- DATA_DIR_DEV
 
-To install:
-```shell script
-pip install "git+https://github.com/ernestone/python_packages#egg=cx_oracle_spatial&subdirectory=cx_oracle_spatial_pckg"
-```
 
-Problems:
-If trying install _cx_oracle_spatial_ an error with `cx_oracle` occurred, try pre-install it with this command in your 
-requirements:
-```shell
-pip install cx_Oracle<7 --upgrade
-```
-See details here https://cx-oracle.readthedocs.io/en/6.4.1/installation.html  
+### Packages:
+- #### [_apb_extra_utils_](apb_extra_utils_pckg/README.md)
+  Python modules to do different stuff about typical use cases in a python program
 
-if you use conda with this:
- ```shell
- conda install cx_Oracle<7
- ```
-### Package _pandas_utils_
-Modules to add functionality over `pandas` and `geopandas` 
+- #### [_apb_spatial_utils_](./apb_spatial_utils_pckg/README.md)
+  Python modules to do different stuff with spatial data
 
-To install:
-```shell script
-pip install "git+https://github.com/ernestone/python_packages#egg=pandas_utils&subdirectory=pandas_utils_pckg"
-```
+- #### [_apb_extra_osgeo_utils_](./apb_extra_osgeo_utils_pckg/README.md)
+  Python modules to do different stuff with spatial data using api OSGEO/GDAL
+
+- #### [_apb_cx_oracle_spatial_](./apb_cx_oracle_spatial_pckg/README.md)
+  Python modules to add spatial capabilities to cx_Oracle
+
+- #### [_apb_pandas_utils_](apb_pandas_utils_pckg/README.md)
+  Python modules to add functionality over pandas and geopandas
+
+- #### [_apb_duckdb_utils_](apb_duckdb_utils_pckg/README.md)
+  Python modules to add functionality over duckdb
+
+
+  

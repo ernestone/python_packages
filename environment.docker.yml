@@ -1,7 +1,10 @@
-python >=3.7,<4
-nodejs <13
-eumetsat::oracle-instantclient
-conda-forge::gdal >=3,<4
-conda-forge::geopandas >=0.8,<0.9
-cx_Oracle<7
-pip >=20
+name: python_packages
+channels:
+- defaults
+- anaconda
+dependencies:
+- python=3.12
+- conda-forge::gdal=3.10
+- pip
+- pip:
+    - -r requirements.txt
